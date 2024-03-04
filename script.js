@@ -127,6 +127,7 @@ return {
 
 
 const gameplay = (function(){
+    let difficulty = "hard";
 
     function playerMove(place) {
         if (place >= 0 && place < gameBoard.board.length) {
@@ -140,9 +141,21 @@ const gameplay = (function(){
     }
 
     function aiMove() {
-        let bestMove = mainMinMax.minmax(gameBoard.board, gameBoard.aiPlayer);
-        let place = bestMove.index;
-        console.log(bestMove)
+        // let bestMove = mainMinMax.minmax(gameBoard.board, gameBoard.aiPlayer);
+        // let place = bestMove.index;
+        console.log('Best move:',bestMove)
+
+        if (difficulty === 'easy') {
+            let emptySpots = gameBoard.emptyIndexies(gameBoard.board);
+            let randomIndex = Math.floor(Math.random() * emptySpots.length);
+            move = {index: emptySpots[randomIndex]};
+        }
+        else if(difficulty === 'hard'){
+            move = mainMinMax.minmax(gameBoard.board, gameBoard.aiPlayer);
+        }
+
+        let place = move.index;
+
         if (place >= 0 && place < gameBoard.board.length) {
             gameBoard.board[place] = "O";
             console.log(gameBoard.board); 
@@ -185,13 +198,14 @@ const gameplay = (function(){
     return{
         aiMove,
         playerMove,
-        whoStarts
+        whoStarts,
+        difficulty
     };
 })()
 
 // gameplay.playerMove(0);
 
-console.log(gameBoard.emptyIndexies(gameBoard.board))
-// gameBoard.winning(gameBoard.board, gameBoard.huPlayer)
-let bestMove = mainMinMax.minmax(gameBoard.board, gameBoard.aiPlayer);
-console.log(bestMove)
+// console.log(gameBoard.emptyIndexies(gameBoard.board))
+// // gameBoard.winning(gameBoard.board, gameBoard.huPlayer)
+// let bestMove = mainMinMax.minmax(gameBoard.board, gameBoard.aiPlayer);
+// console.log(bestMove)
